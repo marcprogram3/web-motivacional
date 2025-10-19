@@ -1,0 +1,15 @@
+# Secrets
+config.js
+
+# Usuaris
+users.json
+
+# Node modules
+node_modules/
+
+# Entorn
+.env
+
+# Sistemes
+.DS_Store
+Thumbs.db
