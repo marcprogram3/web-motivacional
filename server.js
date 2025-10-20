@@ -22,6 +22,9 @@ app.get('/', (req, res) => {
 app.post('/register', (req, res) => {
     const { name, email } = req.body;
     let users = [];
+    if (!fs.existsSync('users.json')) {
+        fs.writeFileSync('users.json', '[]'); // Crea fitxer buit si no existeix
+    }
     if (fs.existsSync('users.json')) {
         users = JSON.parse(fs.readFileSync('users.json'));
     }
@@ -38,6 +41,9 @@ app.post('/register', (req, res) => {
 app.post('/login', (req, res) => {
     const { email } = req.body;
     let users = [];
+    if (!fs.existsSync('users.json')) {
+        fs.writeFileSync('users.json', '[]'); // Crea fitxer buit si no existeix
+    }
     if (fs.existsSync('users.json')) {
         users = JSON.parse(fs.readFileSync('users.json'));
     }
@@ -52,6 +58,9 @@ app.post('/login', (req, res) => {
 app.post('/delete-user', (req, res) => {
     const { email } = req.body;
     let users = [];
+    if (!fs.existsSync('users.json')) {
+        fs.writeFileSync('users.json', '[]'); // Crea fitxer buit si no existeix
+    }
     if (fs.existsSync('users.json')) {
         users = JSON.parse(fs.readFileSync('users.json'));
     }
@@ -63,6 +72,9 @@ app.post('/delete-user', (req, res) => {
 // PANELL ADMIN COMPLET
 app.get('/admin', (req, res) => {
     let users = [];
+    if (!fs.existsSync('users.json')) {
+        fs.writeFileSync('users.json', '[]'); // Crea fitxer buit si no existeix
+    }
     if (fs.existsSync('users.json')) {
         users = JSON.parse(fs.readFileSync('users.json'));
     }
@@ -213,7 +225,13 @@ app.get('/admin', (req, res) => {
 // ENVIAMENT MASSIU
 app.post('/send', async (req, res) => {
     const { message } = req.body;
-    let users = JSON.parse(fs.readFileSync('users.json'));
+    let users = [];
+    if (!fs.existsSync('users.json')) {
+        fs.writeFileSync('users.json', '[]'); // Crea fitxer buit si no existeix
+    }
+    if (fs.existsSync('users.json')) {
+        users = JSON.parse(fs.readFileSync('users.json'));
+    }
     let transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: { user: config.email, pass: config.pass }
