@@ -227,7 +227,7 @@ app.post('/send', async (req, res) => {
     const { message } = req.body;
     let users = [];
     if (!fs.existsSync('users.json')) {
-        fs.writeFileSync('users.json', '[]'); // Crea fitxer buit si no existeix
+        fs.writeFileSync('users.json', '[]');
     }
     if (fs.existsSync('users.json')) {
         users = JSON.parse(fs.readFileSync('users.json'));
@@ -235,9 +235,9 @@ app.post('/send', async (req, res) => {
     let transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: { user: config.email, pass: config.pass },
-        connectionTimeout: 60000, // 60 segons de timeout
-        pool: true, // Usa pool per millorar rendiment
-        rateLimit: 1 // Límits més flexibles
+        connectionTimeout: 60000,
+        pool: true,
+        rateLimit: 1
     });
     for (let user of users) {
         try {
@@ -261,9 +261,9 @@ app.post('/send-personal', async (req, res) => {
     let transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: { user: config.email, pass: config.pass },
-        connectionTimeout: 60000, // 60 segons de timeout
-        pool: true, // Usa pool per millorar rendiment
-        rateLimit: 1 // Límits més flexibles
+        connectionTimeout: 60000,
+        pool: true,
+        rateLimit: 1
     });
     try {
         await transporter.sendMail({
@@ -346,6 +346,7 @@ function getErrorPage(title, message) {
     `;
 }
 
-app.listen(3000, () => {
-    console.log('🚀 Servidor corrent a http://localhost:3000');
+const PORT = process.env.PORT || 3000; // Usa port de Railway o 3000 per defecte
+app.listen(PORT, () => {
+    console.log(`🚀 Servidor corrent a port ${PORT}`);
 });
