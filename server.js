@@ -3,7 +3,11 @@ const nodemailer = require('nodemailer');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
-const config = require('./config');
+
+const config = {
+    email: process.env.EMAIL,
+    pass: process.env.PASS
+};
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -311,7 +315,7 @@ function getErrorPage(title, message) {
                 <h1><i class="fas fa-exclamation-triangle"></i></h1>
                 <h1>${title}</h1>
                 <p>${message}</p>
-                <a href="/">← Tornar a l'inici</a>
+                <a href="/">← Tornar a l\'inici</a>
             </div>
         </body></html>
     `;
