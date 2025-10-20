@@ -234,7 +234,10 @@ app.post('/send', async (req, res) => {
     }
     let transporter = nodemailer.createTransport({
         service: 'gmail',
-        auth: { user: config.email, pass: config.pass }
+        auth: { user: config.email, pass: config.pass },
+        connectionTimeout: 60000, // 60 segons de timeout
+        pool: true, // Usa pool per millorar rendiment
+        rateLimit: 1 // Límits més flexibles
     });
     for (let user of users) {
         try {
@@ -244,6 +247,7 @@ app.post('/send', async (req, res) => {
                 subject: '✨ Missatge Motivacional',
                 text: message
             });
+            console.log(`Enviat a ${user.email}`);
         } catch (error) {
             console.log(`Error enviant a ${user.email}: ${error}`);
         }
@@ -256,7 +260,10 @@ app.post('/send-personal', async (req, res) => {
     const { message, email } = req.body;
     let transporter = nodemailer.createTransport({
         service: 'gmail',
-        auth: { user: config.email, pass: config.pass }
+        auth: { user: config.email, pass: config.pass },
+        connectionTimeout: 60000, // 60 segons de timeout
+        pool: true, // Usa pool per millorar rendiment
+        rateLimit: 1 // Límits més flexibles
     });
     try {
         await transporter.sendMail({
