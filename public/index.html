@@ -421,6 +421,11 @@
             document.querySelectorAll('.toggle-btn')[0].classList.remove('active');
             document.querySelectorAll('.toggle-btn')[1].classList.add('active');
         }
+
+        // MANTINGUT ACTIU (EVITA SLEEP)
+        setInterval(() => {
+            fetch('/');
+        }, 600000); // Cada 10 minuts
     </script>
 </body>
 </html>
