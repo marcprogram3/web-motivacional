@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://fonts.googleapis.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; script-src 'self' 'unsafe-inline'; connect-src 'self' *; font-src https://cdnjs.cloudflare.com;">
+    <title>Missatges Motivacionals</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 15px;
+            position: relative;
+        }
+        .info-icon {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            width: 55px;
+            height: 55px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 22px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            min-width: 55px;
+        }
+        .info-icon:hover, .info-icon:active {
+            background: white;
+            color: #667eea;
+            transform: scale(1.1);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        .container { 
+            max-width: 100%;
+            width: 100%; 
+            text-align: center; 
+            padding: 0 10px;
+        }
+        h1 { 
+            color: white; 
+            font-size: clamp(1.8em, 5vw, 2.5em); 
+            margin-bottom: 10px; 
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .subtitle { 
+            color: rgba(255,255,255,0.9); 
+            margin-bottom: 30px; 
+            font-weight: 300;
+            font-size: clamp(1em, 3vw, 1.1em);
+        }
+        .toggle-buttons { 
+            display: flex; 
+            gap: 12px; 
+            justify-content: center; 
+            margin-bottom: 25px; 
+            flex-wrap: wrap;
+        }
+        .toggle-btn { 
+            padding: 16px 28px; 
+            background: rgba(255,255,255,0.2); 
+            color: white; 
+            border: none; 
+            border-radius: 50px; 
+            cursor: pointer; 
+            font-weight: 600; 
+            transition: all 0.3s ease; 
+            backdrop-filter: blur(10px);
+            font-size: 16px;
+            min-height: 52px;
+            flex: 1;
+            max-width: 180px;
+        }
+        .toggle-btn:hover, .toggle-btn.active { 
+            background: white; 
+            color: #667eea; 
+            transform: translateY(-2px); 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        .form-container { 
+            background: rgba(255,255,255,0.95); 
+            padding: 35px 25px; 
+            border-radius: 20px; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1); 
+            display: none; 
+            animation: slideIn 0.5s ease;
+            margin-bottom: 20px;
+        }
+        .form-container.active { display: block; }
+        .form-container h2 { 
+            color: #333; 
+            margin-bottom: 25px; 
+            font-size: clamp(1.3em, 4vw, 1.5em);
+        }
+        input { 
+            width: 100%; 
+            padding: 18px 16px; 
+            margin: 12px 0; 
+            border: 2px solid #e1e5e9; 
+            border-radius: 12px; 
+            font-size: 16px; 
+            transition: all 0.3s ease;
+            autocomplete: off;
+            min-height: 52px;
+        }
+        input:focus { 
+            outline: none; 
+            border-color: #667eea; 
+            box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
+        }
+        button[type="submit"] { 
+            width: 100%; 
+            padding: 18px; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            color: white; 
+            border: none; 
+            border-radius: 12px; 
+            font-size: 18px; 
+            font-weight: 600; 
+            cursor: pointer; 
+            transition: all 0.3s ease;
+            min-height: 60px;
+        }
+        button[type="submit"]:hover, button[type="submit"]:active { 
+            transform: translateY(-2px); 
+            box-shadow: 0 15px 30px rgba(102,126,234,0.4);
+        }
+        @keyframes slideIn { 
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* MODAL POLÍTICA PRIVACITAT */
+        .privacy-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            padding: 15px;
+            overflow-y: auto;
+        }
+        .privacy-content {
+            background: white;
+            margin: 20px auto;
+            padding: 25px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 600px;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        .privacy-close {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            font-size: 28px;
+            cursor: pointer;
+            color: #999;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .privacy-title {
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: clamp(1.4em, 5vw, 1.8em);
+        }
+        .privacy-section {
+            margin: 20px 0;
+            padding: 18px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+        }
+        .privacy-section h3 {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        .privacy-section p, .privacy-section ul {
+            font-size: 15px;
+            line-height: 1.5;
+        }
+        .accept-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            min-height: 60px;
+        }
+
+        /* MOBILE SPECIFIC */
+        @media (max-width: 480px) { 
+            body { padding: 10px; }
+            .toggle-buttons { gap: 8px; }
+            .toggle-btn { 
+                padding: 18px 20px; 
+                font-size: 15px;
+                min-height: 56px;
+            }
+            .form-container { 
+                padding: 30px 20px; 
+                margin: 10px 0;
+            }
+            input { 
+                padding: 20px 16px; 
+                margin: 15px 0;
+                min-height: 56px;
+            }
+            .info-icon { 
+                top: 12px; 
+                right: 12px; 
+                width: 50px; 
+                height: 50px; 
+                font-size: 20px; 
+            }
+            .privacy-content { 
+                margin: 10px auto; 
+                padding: 20px; 
+            }
+            .privacy-section { 
+                padding: 15px; 
+                margin: 15px 0;
+            }
+        }
+
+        /* AVÍS LOCAL */
+        .local-warning {
+            background: rgba(255, 0, 0, 0.8);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <!-- ICONA INFO -->
+    <button class="info-icon" onclick="showPrivacy()" title="Política de Privacitat">
+        <i class="fas fa-info-circle"></i>
+    </button>
+
+    <!-- MODAL POLÍTICA PRIVACITAT -->
+    <div id="privacyModal" class="privacy-modal">
+        <div class="privacy-content">
+            <span class="privacy-close" onclick="closePrivacy()">&times;</span>
+            <h2 class="privacy-title"><i class="fas fa-shield-alt"></i> Política de Privacitat</h2>
+            
+            <div class="privacy-section">
+                <h3><strong>1. Dades recollides</strong></h3>
+                <p>Recollim únicament:</p>
+                <ul style="text-align: left; padding-left: 20px;">
+                    <li>• Nom (per personalitzar missatges)</li>
+                    <li>• Adreça de correu electrònic</li>
+                </ul>
+            </div>
+
+            <div class="privacy-section">
+                <h3><strong>2. Finalitat</strong></h3>
+                <p>Únicament per:</p>
+                <ul style="text-align: left; padding-left: 20px;">
+                    <li>• Enviar-te missatges motivacionals</li>
+                    <li>• Gestionar el teu registre</li>
+                </ul>
+                <p><strong>NO compartim les teves dades amb ningú.</strong></p>
+            </div>
+
+            <div class="privacy-section">
+                <h3><strong>3. Emmagatzematge</strong></h3>
+                <p>Les dades es guarden de forma segura en un fitxer encriptat al nostre servidor.</p>
+            </div>
+
+            <div class="privacy-section">
+                <h3><strong>4. Drets</strong></h3>
+                <p>Pots <strong>eliminar el teu compte en qualsevol moment</strong> contactant amb l'administrador.</p>
+            </div>
+
+            <div class="privacy-section">
+                <h3><strong>5. Contacte</strong></h3>
+                <p>Per qualsevol dubte: <strong>marc.program3@gmail.com</strong></p>
+            </div>
+
+            <button class="accept-btn" onclick="closePrivacy()">
+                <i class="fas fa-check"></i> ENTÉS, TANQUEM
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL INICIAL (PRIMER ACCÉS) -->
+    <div id="initialPrivacyModal" class="privacy-modal">
+        <div class="privacy-content">
+            <span class="privacy-close" onclick="closeInitialPrivacy()">&times;</span>
+            <h2 class="privacy-title"><i class="fas fa-shield-alt"></i> Política de Privacitat</h2>
+            
+            <div class="privacy-section">
+                <h3><strong>1. Dades recollides</strong></h3>
+                <p>Recollim únicament:</p>
+                <ul style="text-align: left; padding-left: 20px;">
+                    <li>• Nom (per personalitzar missatges)</li>
+                    <li>• Adreça de correu electrònic</li>
+                </ul>
+            </div>
+
+            <div class="privacy-section">
+                <h3><strong>2. Finalitat</strong></h3>
+                <p>Únicament per:</p>
+                <ul style="text-align: left; padding-left: 20px;">
+                    <li>• Enviar-te missatges motivacionals</li>
+                    <li>• Gestionar el teu registre</li>
+                </ul>
+                <p><strong>NO compartim les teves dades amb ningú.</strong></p>
+            </div>
+
+            <div class="privacy-section">
+                <h3><strong>3. Emmagatzematge</strong></h3>
+                <p>Les dades es guarden de forma segura en un fitxer encriptat al nostre servidor.</p>
+            </div>
+
+            <div class="privacy-section">
+                <h3><strong>4. Drets</strong></h3>
+                <p>Pots <strong>eliminar el teu compte en qualsevol moment</strong> contactant amb l'administrador.</p>
+            </div>
+
+            <div class="privacy-section">
+                <h3><strong>5. Contacte</strong></h3>
+                <p>Per qualsevol dubte: <strong>marc.program3@gmail.com</strong></p>
+            </div>
+
+            <button class="accept-btn" onclick="acceptInitialPrivacy()">
+                <i class="fas fa-check"></i> ACCEPTAR I CONTINUAR
+            </button>
+        </div>
+    </div>
+
+    <div class="container" id="mainContent" style="display: none;">
+        <div class="local-warning">
+            <p>Perquè aquestes funcionalitats funcionin (registre i login), cal que l'administrador executi el servidor localment a <strong>http://localhost:3000</strong>. Contacta amb l'administrador per activar-ho.</p>
+        </div>
+        <h1><i class="fas fa-rocket"></i> Motivació Diària</h1>
+        <p class="subtitle">Frases que canviaran el teu dia</p>
+        
+        <div class="toggle-buttons">
+            <button class="toggle-btn active" onclick="showRegister()">
+                <i class="fas fa-user-plus"></i> Registre
+            </button>
+            <button class="toggle-btn" onclick="showLogin()">
+                <i class="fas fa-sign-in-alt"></i> Login
+            </button>
+        </div>
+        
+        <div id="registerForm" class="form-container active">
+            <h2><i class="fas fa-user-plus"></i> Crea el teu compte</h2>
+            <form action="http://localhost:3000/register" method="post">
+                <input type="text" name="name" placeholder="El teu nom" required autocomplete="off">
+                <input type="email" name="email" placeholder="El teu correu electrònic" required autocomplete="off">
+                <button type="submit"><i class="fas fa-rocket"></i> Començar el viatge</button>
+            </form>
+        </div>
+        
+        <div id="loginForm" class="form-container">
+            <h2><i class="fas fa-sign-in-alt"></i> Accedeix ràpid</h2>
+            <form action="http://localhost:3000/login" method="post">
+                <input type="email" name="email" placeholder="El teu correu electrònic" required autocomplete="off">
+                <button type="submit"><i class="fas fa-lightning"></i> Entrar</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // ICONA INFO
+        function showPrivacy() {
+            document.getElementById('privacyModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        // POLÍTICA INICIAL
+        function acceptInitialPrivacy() {
+            localStorage.setItem('privacyAccepted', 'true');
+            document.getElementById('initialPrivacyModal').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
+            document.body.style.overflow = 'auto';
+        }
+        function closeInitialPrivacy() {
+            acceptInitialPrivacy();
+        }
+        if (localStorage.getItem('privacyAccepted') === 'true') {
+            document.getElementById('initialPrivacyModal').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
+        } else {
+            document.getElementById('initialPrivacyModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        // MODAL INFO
+        function closePrivacy() {
+            document.getElementById('privacyModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function showRegister() {
+            document.getElementById('registerForm').classList.add('active');
+            document.getElementById('loginForm').classList.remove('active');
+            document.querySelectorAll('.toggle-btn')[0].classList.add('active');
+            document.querySelectorAll('.toggle-btn')[1].classList.remove('active');
+        }
+        function showLogin() {
+            document.getElementById('registerForm').classList.remove('active');
+            document.getElementById('loginForm').classList.add('active');
+            document.querySelectorAll('.toggle-btn')[0].classList.remove('active');
+            document.querySelectorAll('.toggle-btn')[1].classList.add('active');
+        }
+    </script>
+</body>
+</html>
